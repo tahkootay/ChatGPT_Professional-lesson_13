@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деловой Чат</title>
+    <!-- Подключаем Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Встроенные стили для небольшой настройки -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        #outputField {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Отправьте ваше сообщение</h5>
+                    <form id="chatForm">
+                        <div class="form-group">
+                            <label for="inputField">Ваш текст:</label>
+                            <input type="text" class="form-control" id="inputField" name="inputField" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="submitRequest()">Отправить запрос</button>
+                        <button type="button" class="btn btn-primary" onclick="openStatPage()">Посмотреть статистику</button> 
+
+                    </form>
+                    <textarea class="form-control" id="outputField" rows=10" placeholder="Ответ консультанта..." readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Подключаем Bootstrap JS и зависимости -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Встроенный JavaScript для осуществления запроса и вывода ответа -->
+<script>
+    function submitRequest() {
+        var inputText = document.getElementById('inputField').value;
+        var outputField = document.getElementById('outputField');
+        fetch('http://127.0.0.1:8000/get_answer_browser=' + encodeURIComponent(inputText))
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(text) {
+                outputField.value = text;
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+                outputField.value = 'Ошибка получения ответа';
+            });
+    }
+    function openStatPage() {
+    // Открывает новую вкладку с указанным URL
+    window.open("http://127.0.0.1:8080/stat", "_blank");
+    }
+</script>
+
+</body>
+</html>

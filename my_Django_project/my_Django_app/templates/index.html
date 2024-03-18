@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Web Service</title>
+</head>
+<body>
+    <h1>Items</h1>
+    <ul>
+        {% for item in items %}
+            <li>{{ item.title }}: {{ item.description }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
